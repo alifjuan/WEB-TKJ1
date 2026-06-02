@@ -489,19 +489,127 @@
     .footer-copy span { color:var(--neon-cyan); }
 
     /* ===================== RESPONSIVE ===================== */
+
+    /* Hamburger menu (HP) */
+    .nav-hamburger {
+      display:none; flex-direction:column; gap:5px; cursor:pointer;
+      padding:.4rem; border:1px solid var(--border-neon); border-radius:8px;
+      background:rgba(0,240,255,.04); transition:all .25s;
+    }
+    .nav-hamburger:hover { background:rgba(0,240,255,.1); }
+    .nav-hamburger span {
+      display:block; width:22px; height:2px;
+      background:var(--neon-cyan); border-radius:2px;
+      transition:all .3s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity:0; }
+    .nav-hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+
+    /* Mobile nav drawer */
+    .nav-drawer {
+      display:none; position:fixed; top:0; left:0; right:0; bottom:0;
+      z-index:199; background:rgba(2,8,24,.97); backdrop-filter:blur(24px);
+      flex-direction:column; align-items:center; justify-content:center; gap:1.5rem;
+      padding:2rem;
+    }
+    .nav-drawer.open { display:flex; }
+    .nav-drawer .btn-nav {
+      font-size:.95rem; padding:.8rem 2.5rem; width:100%; max-width:280px;
+      justify-content:center; border-radius:12px; cursor:pointer;
+    }
+    .nav-drawer #nav-clock-mobile {
+      font-family:var(--font-mono); font-size:.75rem;
+      color:var(--neon-cyan); letter-spacing:.1em; margin-bottom:.5rem;
+    }
+
+    /* ── Tablet (≤1024px) ── */
     @media(max-width:1024px){
-      .profil-grid { grid-template-columns:1fr; }
-      .prestasi-layout { grid-template-columns:1fr; }
+      .profil-grid { grid-template-columns:1fr; gap:2rem; }
+      .prestasi-layout { grid-template-columns:1fr; gap:2rem; }
       .prestasi-highlight { position:static; }
+      .sec-inner { padding:4rem 1.5rem; }
     }
+
+    /* ── Mobile (≤768px) ── */
     @media(max-width:768px){
-      .hero-stats { gap:1rem; }
-      .hstat { min-width:90px; }
-      .event-grid, .fasilitas-grid, .video-grid { grid-template-columns:1fr; }
+      /* Cursor off di mobile */
+      #cur-dot, #cur-ring { display:none; }
+      body { cursor:auto; }
+      .btn-nav, .btn-upload, .galeri-del-btn, .yt-del-btn { cursor:pointer; }
+
+      /* Navbar */
+      nav { padding:.7rem 1rem; }
+      .nav-right { display:none; }
+      .nav-hamburger { display:flex; }
+
+      /* Hero */
+      .hero { padding:6rem 1rem 3rem; min-height:90vh; }
+      .hero-stats { gap:.7rem; }
+      .hstat { min-width:80px; padding:.7rem 1rem; }
+      .hstat-val { font-size:1.5rem; }
+      .hstat-lbl { font-size:.55rem; }
+      .scroll-hint { display:none; }
+
+      /* Sections */
+      .sec-inner { padding:3.5rem 1rem; }
+      .sec-title { font-size:clamp(1.3rem,6vw,2rem); }
+
+      /* Grids → 1 kolom */
+      .event-grid { grid-template-columns:1fr; }
+      .fasilitas-grid { grid-template-columns:1fr; }
+      .video-grid { grid-template-columns:1fr; }
+      .galeri-grid { grid-template-columns:repeat(2,1fr); gap:.7rem; }
+
+      /* Profil grid */
+      .profil-grid { grid-template-columns:1fr; gap:1.5rem; }
+      div[style*="grid-template-columns:1fr 1fr"] { display:block !important; }
+
+      /* Prestasi */
+      .prestasi-layout { grid-template-columns:1fr; }
+      .prestasi-item { flex-wrap:wrap; gap:.8rem; }
+      .prestasi-level { align-self:flex-start; }
+
+      /* Upload area */
+      .upload-video-area { padding:1.8rem 1rem; }
+      .yt-input-wrap { flex-direction:column; align-items:stretch; }
+      .yt-input, .yt-title-input { min-width:0; max-width:100%; }
+      .btn-yt-add { width:100%; justify-content:center; }
+
+      /* Lightbox nav */
+      #lb-prev { left:-.5rem; }
+      #lb-next { right:-.5rem; }
+      .lb-inner { padding:0 .5rem; }
+
+      /* YT modal */
+      .yt-modal-inner { padding:0; }
+
+      /* Footer */
+      .footer-nav { gap:.8rem; }
+
+      /* Back to top */
+      #btt { bottom:1rem; right:1rem; width:38px; height:38px; font-size:1rem; }
+
+      /* clock hide */
       #nav-clock { display:none; }
+
+      /* Galeri del btn always visible on mobile */
+      .galeri-del-btn { opacity:1; }
+      .yt-del-btn { opacity:1; }
     }
+
+    /* ── Small Mobile (≤480px) ── */
     @media(max-width:480px){
-      .hero-stats { flex-direction:row; flex-wrap:wrap; justify-content:center; }
+      .hero-stats { gap:.5rem; }
+      .hstat { min-width:70px; padding:.6rem .7rem; }
+      .hstat-val { font-size:1.3rem; }
+      .hero-badge { font-size:.58rem; letter-spacing:.1em; }
+      .galeri-grid { grid-template-columns:repeat(2,1fr); gap:.5rem; }
+      .nav-brand { font-size:.7rem; }
+      .sec-inner { padding:3rem .85rem; }
+      .timeline { padding-left:1.5rem; }
+      .prestasi-item { padding:.9rem 1rem; }
+      .pv-card { padding:.9rem 1rem; }
     }
 
     /* ===================== RIPPLE ===================== */
@@ -738,7 +846,25 @@
         <i class="bi bi-arrow-left"></i>Kembali
       </a>
     </div>
+    <!-- Hamburger untuk HP -->
+    <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="nav-drawer" id="nav-drawer">
+    <div id="nav-clock-mobile">00:00:00</div>
+    <a href="#profil"    class="btn-nav" onclick="closeMenu()"><i class="bi bi-info-circle"></i>Profil</a>
+    <a href="#kegiatan"  class="btn-nav" onclick="closeMenu()"><i class="bi bi-calendar-event"></i>Kegiatan</a>
+    <a href="#prestasi"  class="btn-nav" onclick="closeMenu()"><i class="bi bi-trophy"></i>Prestasi</a>
+    <a href="#fasilitas" class="btn-nav" onclick="closeMenu()"><i class="bi bi-pc-display"></i>Lab</a>
+    <a href="#video"     class="btn-nav" onclick="closeMenu()"><i class="bi bi-camera-video"></i>Video</a>
+    <a href="XI_TKJ1_IMELDA.html" class="btn-nav" style="border-color:rgba(191,0,255,.35);color:rgba(191,0,255,.8)">
+      <i class="bi bi-arrow-left"></i>Kembali
+    </a>
+    <button onclick="closeMenu()" style="font-family:var(--font-mono);font-size:.65rem;color:rgba(224,247,255,.35);background:none;border:none;cursor:pointer;letter-spacing:.1em;margin-top:.5rem">✕ TUTUP</button>
+  </div>
 
   <!-- ===== HERO ===== -->
   <section class="hero" id="top">
@@ -1339,16 +1465,23 @@
     /* ===== AOS ===== */
     AOS.init({ duration:750, easing:'ease-out-cubic', once:true, offset:55 });
 
-    /* ===== CURSOR ===== */
+    /* ===== CURSOR (hanya desktop) ===== */
     const dot=document.getElementById('cur-dot'), ring=document.getElementById('cur-ring');
     let mx=0,my=0,rx=0,ry=0;
-    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-    (function tick(){
-      dot.style.transform=`translate(${mx-4}px,${my-4}px)`;
-      rx+=(mx-rx-19)*.12; ry+=(my-ry-19)*.12;
-      ring.style.transform=`translate(${rx}px,${ry}px)`;
-      requestAnimationFrame(tick);
-    })();
+    const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    if(!isTouchDevice){
+      document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+      (function tick(){
+        dot.style.transform=`translate(${mx-4}px,${my-4}px)`;
+        rx+=(mx-rx-19)*.12; ry+=(my-ry-19)*.12;
+        ring.style.transform=`translate(${rx}px,${ry}px)`;
+        requestAnimationFrame(tick);
+      })();
+    } else {
+      dot.style.display='none';
+      ring.style.display='none';
+      document.body.style.cursor='auto';
+    }
 
     /* ===== MATRIX RAIN ===== */
     const cv=document.getElementById('matrix-canvas'), cx=cv.getContext('2d');
@@ -1374,8 +1507,26 @@
       const n=new Date();
       const s=`${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`;
       document.getElementById('nav-clock').textContent=s;
+      const mc = document.getElementById('nav-clock-mobile');
+      if(mc) mc.textContent=s;
     }
     tick(); setInterval(tick,1000);
+
+    /* ===== HAMBURGER MENU ===== */
+    function toggleMenu(){
+      const drawer = document.getElementById('nav-drawer');
+      const burger = document.getElementById('hamburger');
+      drawer.classList.toggle('open');
+      burger.classList.toggle('open');
+    }
+    function closeMenu(){
+      document.getElementById('nav-drawer').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+    }
+    // Tutup drawer saat klik di luar
+    document.getElementById('nav-drawer').addEventListener('click', function(e){
+      if(e.target === this) closeMenu();
+    });
 
     /* ===== COUNTER ANIMATION ===== */
     function animCounters(){
